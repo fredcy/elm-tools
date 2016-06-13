@@ -1,17 +1,22 @@
 #!/usr/bin/env python27
 
-"""Copy an elm-lang module with Native code, converted munged names.
+"""Copy an unpublished elm-lang package with Native code, converting munged names.
 
 Native code in elm-lang modules uses global variable names that have a prefix
-that has to match the username and repo name of the module. For example, native
-code in a module whose repository (in its elm-package.json file) is
+that has to match the username and repo name of the package. For example, native
+code in a package whose repository (in its elm-package.json file) is
 "https://github.com/joeschmoe/elm-coolstuff.git" must have global variable names
 that start with "_joeschmoe$elm_coolstuff$".
 
-To use such code in another project we have to convert those global variable
-names to match the user/repo name of that project. That's what this script does:
-it copies a directory containing an elm-lang module, modifying native javascript
-code to convert those names as needed.
+To use such unpublished code as source in another package we have to convert
+those global variable names to match the user/repo name of that target
+project. That's what this script does: it copies a directory containing an
+elm-lang package, modifying native javascript code to convert those names as
+needed.
+
+The username/reponame values (before and after conversion) are calculated from
+the elm-package.json of the source package and the current package,
+respectively.
 
 """
 
@@ -38,7 +43,7 @@ def convertDir(inroot, outroot):
         return
 
     # (assume that we are running in the root directory of project that will use
-    # the converted module)
+    # the converted package)
     dstPkgFileName = "elm-package.json"
     dstname = getName(dstPkgFileName)
     if not dstname:
@@ -112,8 +117,8 @@ def getName(pkgFileName):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Copy Elm module, converting names in Native-JS code')
-    parser.add_argument('indir', help='directory name of module to convert')
+    parser = argparse.ArgumentParser(description='Copy Elm package, converting names in Native-JS code')
+    parser.add_argument('indir', help='directory name of package to convert')
     parser.add_argument('outdir', help='new directory for converted code')
     parser.add_argument('-d', '--debug', action='store_true',
                         help='display detailed info while running')
