@@ -112,10 +112,11 @@ def getName(pkgFileName):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Convert native module')
+    parser = argparse.ArgumentParser(description='Copy Elm module, converting names in Native-JS code')
     parser.add_argument('indir', help='directory name of module to convert')
     parser.add_argument('outdir', help='new directory for converted code')
-    parser.add_argument('--debug', '-d', action='store_true')
+    parser.add_argument('-d', '--debug', action='store_true',
+                        help='display detailed info while running')
     args = parser.parse_args()
     
     if args.debug:
